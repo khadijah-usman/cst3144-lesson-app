@@ -22,15 +22,17 @@ createApp({
           icon: "fa-solid fa-book-open",
           image: "https://img.icons8.com/color/240/book-reading.png"
         },
-        {
-          id: 3,
-          subject: "Biology",
-          location: "Golders Green",
-          price: 90,
-          spaces: 5,
-          icon: "fa-solid fa-seedling",
-          image: "https://img.icons8.com/color/240/biology.png"
-        },
+        
+          {
+            id: 3,
+            subject: "Biology",
+            location: "Golders Green",
+            price: 90,
+            spaces: 5,
+            icon: "fa-solid fa-seedling",
+            image: "https://img.icons8.com/color/240/test-tube.png"
+          },
+          
         {
           id: 4,
           subject: "Chemistry",

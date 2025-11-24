@@ -104,11 +104,12 @@
                                 <i class="fa-solid fa-users"></i>
                                 Spaces: {{ lesson.spaces }}
                                 <span
-                                    v-if="lesson.spaces <= 2"
-                                    class="badge-low"
-                                >
-                                    Almost full
-                                </span>
+                                v-if="lesson.spaces > 0 && lesson.spaces <= 2"
+                                class="badge-low"
+                              >
+                                Almost full
+                              </span>
+                              
                             </p>
                         </div>
                         <button

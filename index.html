@@ -91,21 +91,18 @@
                             class="lesson-img"
                         />
                         <div class="lesson-info">
-                            <div class="lesson-header-row">
-                                <h3>
-                                    <i :class="lesson.icon"></i>
-                                    {{ lesson.subject }}
-                                </h3>
-                                <span class="lesson-price">£{{ lesson.price }}</span>
-                            </div>
-
-                            <p class="lesson-meta">
+                            <h3>
+                                <i :class="lesson.icon"></i>
+                                {{ lesson.subject }}
+                            </h3>
+                            <p>
                                 <i class="fa-solid fa-location-dot"></i>
                                 {{ lesson.location }}
                             </p>
-                            <p class="lesson-meta">
+                            <p>£{{ lesson.price }}</p>
+                            <p>
                                 <i class="fa-solid fa-users"></i>
-                                {{ lesson.spaces }} spaces available
+                                Spaces: {{ lesson.spaces }}
                                 <span
                                     v-if="lesson.spaces <= 2"
                                     class="badge-low"

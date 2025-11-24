@@ -202,6 +202,12 @@ input {
   color: var(--text-light);
 }
 
+.no-results {
+  margin-top: 16px;
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+
 .lesson-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -299,6 +305,7 @@ input {
   text-align: center;
   color: var(--text-light);
   font-size: 0.95rem;
+  margin-top: 10px;
 }
 
 .cart-list {
@@ -474,11 +481,24 @@ button:active {
   .header {
     flex-direction: column;
     gap: 12px;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+
+  .controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .search {
+    width: 100%;
   }
 
   .lesson-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .cart-section {
+    padding: 20px 15px;
   }
 }
 
@@ -494,22 +514,6 @@ button:active {
   margin-bottom: 8px;
 }
 
-/* ======== FADE TRANSITION ======== */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-.cart-empty {
-  text-align: center;
-  color: var(--text-light);
-  font-size: 0.95rem;
-  margin-top: 10px;
-}
 /* ======== FADE TRANSITION ======== */
 .fade-enter-active,
 .fade-leave-active {

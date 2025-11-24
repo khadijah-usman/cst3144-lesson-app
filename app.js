@@ -110,15 +110,16 @@ createApp({
   },
 
   computed: {
+    // Filters lessons based on search term (subject, location, price, spaces)
     filteredLessons() {
       const term = this.searchTerm.toLowerCase();
-    
-      return this.lessons.filter(l => {
+
+      return this.lessons.filter((l) => {
         const subject = l.subject.toLowerCase();
         const location = l.location.toLowerCase();
         const price = String(l.price).toLowerCase();
         const spaces = String(l.spaces).toLowerCase();
-    
+
         return (
           subject.includes(term) ||
           location.includes(term) ||
@@ -127,8 +128,8 @@ createApp({
         );
       });
     },
-    
 
+    // Sorts the filtered lessons by selected field and order
     sortedAndFilteredLessons() {
       return this.filteredLessons.slice().sort((a, b) => {
         const modifier = this.sortOrder === "asc" ? 1 : -1;
@@ -138,19 +139,21 @@ createApp({
       });
     },
 
+    // Validates name (letters only) and phone (8–15 digits)
     isFormValid() {
       const namePattern = /^[A-Za-z ]+$/;
       const phonePattern = /^[0-9]{8,15}$/; // 8–15 digits
       return namePattern.test(this.name) && phonePattern.test(this.phone);
     },
-    
 
+    // Calculates total price of items in the cart
     cartTotal() {
       return this.cart.reduce((total, item) => total + item.price, 0);
     }
   },
 
   methods: {
+    // Adds a lesson to the cart and decreases its available spaces
     addToCart(lesson) {
       if (lesson.spaces > 0) {
         this.cart.push({ ...lesson });
@@ -158,6 +161,7 @@ createApp({
       }
     },
 
+    // Removes item from cart and restores one space to the original lesson
     removeFromCart(index) {
       const lesson = this.cart[index];
       const original = this.lessons.find((l) => l.id === lesson.id);
@@ -165,33 +169,34 @@ createApp({
       this.cart.splice(index, 1);
     },
 
+    // Validates form and shows success message + clears cart on success
     checkout() {
       this.nameError = "";
       this.phoneError = "";
-    
+
       const namePattern = /^[A-Za-z ]+$/;
       const phonePattern = /^[0-9]{8,15}$/;
-    
+
       if (!namePattern.test(this.name)) {
         this.nameError = "Name must contain letters only.";
       }
       if (!phonePattern.test(this.phone)) {
         this.phoneError = "Phone number must contain 8–15 digits.";
       }
-    
+
       if (!this.nameError && !this.phoneError) {
         this.orderConfirmed = true;
-    
+
         setTimeout(() => {
           this.cart = [];
           this.name = "";
           this.phone = "";
-          this.orderConfirmed = false; // hide success after a bit
+          this.orderConfirmed = false;
         }, 1500);
       }
     },
-    
 
+    // Returns to the lessons view
     goHome() {
       this.showCart = false;
     }

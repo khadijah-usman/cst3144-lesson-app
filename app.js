@@ -96,7 +96,7 @@ createApp({
         }
       ],
 
-      cart: [],
+      cart: [], // each item: { id, subject, location, price, image, quantity }
       showCart: false,
       searchTerm: "",
       sortBy: "subject",
@@ -146,26 +146,82 @@ createApp({
       return namePattern.test(this.name) && phonePattern.test(this.phone);
     },
 
-    // Calculates total price of items in the cart
+    // Total cost of the cart (price * quantity)
     cartTotal() {
-      return this.cart.reduce((total, item) => total + item.price, 0);
+      return this.cart.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+    },
+
+    // Total number of items in the cart (sum of quantities)
+    cartItemCount() {
+      return this.cart.reduce((count, item) => count + item.quantity, 0);
     }
   },
 
   methods: {
-    // Adds a lesson to the cart and decreases its available spaces
+    // Adds a lesson to the cart (grouped by lesson, with quantity)
     addToCart(lesson) {
       if (lesson.spaces > 0) {
-        this.cart.push({ ...lesson });
+        const existingItem = this.cart.find((item) => item.id === lesson.id);
+
+        if (existingItem) {
+          // Increase quantity of existing item
+          existingItem.quantity++;
+        } else {
+          // Add new item to cart
+          this.cart.push({
+            id: lesson.id,
+            subject: lesson.subject,
+            location: lesson.location,
+            price: lesson.price,
+            image: lesson.image,
+            quantity: 1
+          });
+        }
+
+        // Decrease available spaces on the lesson
         lesson.spaces--;
       }
     },
 
-    // Removes item from cart and restores one space to the original lesson
+    // Increase quantity from inside the cart (if spaces are available)
+    increaseQuantity(index) {
+      const cartItem = this.cart[index];
+      const lesson = this.lessons.find((l) => l.id === cartItem.id);
+
+      if (lesson && lesson.spaces > 0) {
+        cartItem.quantity++;
+        lesson.spaces--;
+      }
+    },
+
+    // Decrease quantity; if quantity goes to 0, remove the item
+    decreaseQuantity(index) {
+      const cartItem = this.cart[index];
+      const lesson = this.lessons.find((l) => l.id === cartItem.id);
+
+      if (cartItem.quantity > 1) {
+        cartItem.quantity--;
+        if (lesson) {
+          lesson.spaces++;
+        }
+      } else {
+        // If quantity is 1, removing one more means removing the whole line
+        this.removeFromCart(index);
+      }
+    },
+
+    // Removes item from cart and restores all reserved spaces
     removeFromCart(index) {
-      const lesson = this.cart[index];
-      const original = this.lessons.find((l) => l.id === lesson.id);
-      if (original) original.spaces++;
+      const cartItem = this.cart[index];
+      const lesson = this.lessons.find((l) => l.id === cartItem.id);
+
+      if (lesson) {
+        lesson.spaces += cartItem.quantity;
+      }
+
       this.cart.splice(index, 1);
     },
 
@@ -188,6 +244,8 @@ createApp({
         this.orderConfirmed = true;
 
         setTimeout(() => {
+          // On successful order, we clear the cart and form.
+          // Spaces are NOT restored here, because the order is confirmed.
           this.cart = [];
           this.name = "";
           this.phone = "";

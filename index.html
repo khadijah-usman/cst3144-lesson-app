@@ -48,11 +48,11 @@
             <button
                 class="cart-btn"
                 @click="showCart = !showCart"
-                :disabled="cart.length === 0"
+                :disabled="cartItemCount === 0"
             >
                 <i class="fa-solid fa-cart-shopping"></i>
                 <span>Cart</span>
-                <span v-if="cart.length" class="cart-badge">{{ cart.length }}</span>
+                <span v-if="cartItemCount" class="cart-badge">{{ cartItemCount }}</span>
             </button>
         </div>
     </header>
@@ -129,9 +129,19 @@
                 <!-- Cart with items -->
                 <div v-else>
                     <ul class="cart-list">
+                        <!-- Header row -->
+                        <li class="cart-header-row">
+                            <span>Lesson</span>
+                            <span>Price</span>
+                            <span>Quantity</span>
+                            <span>Line Total</span>
+                            <span></span>
+                        </li>
+
+                        <!-- Cart rows -->
                         <li
                             v-for="(item, index) in cart"
-                            :key="index"
+                            :key="item.id"
                             class="cart-item"
                         >
                             <div class="cart-item-info">
@@ -146,23 +156,45 @@
                                         <i class="fa-solid fa-location-dot"></i>
                                         {{ item.location }}
                                     </p>
-                                    <p>
-                                        £{{ item.price }} | Spaces left: {{ item.spaces }}
-                                    </p>
                                 </div>
                             </div>
+
+                            <span class="cart-price">
+                                £{{ item.price }}
+                            </span>
+
+                            <div class="cart-qty">
+                                <button
+                                    class="qty-btn"
+                                    @click="decreaseQuantity(index)"
+                                >
+                                    -
+                                </button>
+                                <span class="qty-value">{{ item.quantity }}</span>
+                                <button
+                                    class="qty-btn"
+                                    @click="increaseQuantity(index)"
+                                >
+                                    +
+                                </button>
+                            </div>
+
+                            <span class="cart-line-total">
+                                £{{ (item.price * item.quantity).toFixed(2) }}
+                            </span>
+
                             <button
                                 class="remove-btn"
                                 @click="removeFromCart(index)"
                             >
-                                <i class="fa-solid fa-trash"></i> Remove
+                                <i class="fa-solid fa-trash"></i>
                             </button>
                         </li>
                     </ul>
 
                     <div class="cart-total-box">
                         <h3>
-                            {{ cart.length }} item(s) |
+                            {{ cartItemCount }} item(s) |
                             Total: £{{ cartTotal.toFixed(2) }}
                         </h3>
                     </div>

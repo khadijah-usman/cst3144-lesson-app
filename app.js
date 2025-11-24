@@ -112,13 +112,13 @@ createApp({
   computed: {
     filteredLessons() {
       const term = this.searchTerm.toLowerCase();
-
-      return this.lessons.filter((l) => {
+    
+      return this.lessons.filter(l => {
         const subject = l.subject.toLowerCase();
         const location = l.location.toLowerCase();
         const price = String(l.price).toLowerCase();
         const spaces = String(l.spaces).toLowerCase();
-
+    
         return (
           subject.includes(term) ||
           location.includes(term) ||
@@ -127,6 +127,7 @@ createApp({
         );
       });
     },
+    
 
     sortedAndFilteredLessons() {
       return this.filteredLessons.slice().sort((a, b) => {

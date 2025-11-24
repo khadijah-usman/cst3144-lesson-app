@@ -57,26 +57,74 @@
 
     <!-- Main Content -->
     <main>
-        <!-- Lesson List -->
-        <section v-if="!showCart" class="lesson-section">
+        <transition name="fade" mode="out-in">
+          <!-- Lesson List -->
+          <section v-if="!showCart" key="lessons" class="lesson-section">
             <h2>Available Lessons</h2>
-            <div class="lesson-grid">
-                <div class="lesson-card" v-for="lesson in sortedAndFilteredLessons" :key="lesson.id">
-                    <img :src="lesson.image" alt="Lesson image" class="lesson-img" />
-                    <div class="lesson-info">
-                        <h3><i :class="lesson.icon"></i> {{ lesson.subject }}</h3>
-                        <p><i class="fa-solid fa-location-dot"></i> {{ lesson.location }}</p>
-                        <p>£{{ lesson.price }}</p>
-                        <p><i class="fa-solid fa-users"></i> Spaces: {{ lesson.spaces }}</p>
-                    </div>
-                    <button @click="addToCart(lesson)" :disabled="lesson.spaces === 0" class="add-btn">
-                        <i class="fa-solid fa-cart-plus"></i>
-                        {{ lesson.spaces > 0 ? 'Add to Cart' : 'Full' }}
-                    </button>
+      
+            <!-- NEW: lessons found text -->
+            <p class="lesson-count">
+              {{ sortedAndFilteredLessons.length }} lesson(s) found
+            </p>
+      
+            <!-- NEW: no results message when search has no matches -->
+            <p
+              v-if="!sortedAndFilteredLessons.length && searchTerm"
+              class="no-results"
+            >
+              No lessons found for "{{ searchTerm }}".
+            </p>
+      
+            <!-- Only show grid when we actually have lessons -->
+            <div v-else class="lesson-grid">
+              <!-- keep your existing lesson cards exactly as they are -->
+              <div
+                class="lesson-card"
+                v-for="lesson in sortedAndFilteredLessons"
+                :key="lesson.id"
+              >
+                <!-- your existing lesson card content (img, info, button) -->
+                <img
+                  :src="lesson.image"
+                  :alt="lesson.subject + ' lesson icon'"
+                  class="lesson-img"
+                />
+                <div class="lesson-info">
+                  <h3>
+                    <i :class="lesson.icon"></i>
+                    {{ lesson.subject }}
+                  </h3>
+                  <p>
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ lesson.location }}
+                  </p>
+                  <p>£{{ lesson.price }}</p>
+                  <p>
+                    <i class="fa-solid fa-users"></i>
+                    Spaces: {{ lesson.spaces }}
+                  </p>
                 </div>
+                <button
+                  @click="addToCart(lesson)"
+                  :disabled="lesson.spaces === 0"
+                  class="add-btn"
+                >
+                  <i class="fa-solid fa-cart-plus"></i>
+                  {{ lesson.spaces > 0 ? 'Add to Cart' : 'Full' }}
+                </button>
+              </div>
             </div>
-        </section>
-
+          </section>
+      
+          <!-- Cart Section (keep your current improved content) -->
+          <section v-else key="cart" class="cart-section">
+            <!-- keep your existing cart-header, list, checkout-box etc. -->
+            <!-- you should already have the version with back button + checkout-box -->
+            ...
+          </section>
+        </transition>
+      </main>
+      
         <!-- Cart Section -->
 <section v-else class="cart-section">
     <!-- Header with back button -->

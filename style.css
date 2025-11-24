@@ -510,3 +510,13 @@ button:active {
   font-size: 0.95rem;
   margin-top: 10px;
 }
+/* ======== FADE TRANSITION ======== */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

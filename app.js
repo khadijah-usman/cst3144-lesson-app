@@ -143,6 +143,7 @@ createApp({
       const phonePattern = /^[0-9]{8,15}$/; // 8–15 digits
       return namePattern.test(this.name) && phonePattern.test(this.phone);
     },
+    
 
     cartTotal() {
       return this.cart.reduce((total, item) => total + item.price, 0);
@@ -167,28 +168,29 @@ createApp({
     checkout() {
       this.nameError = "";
       this.phoneError = "";
-
+    
       const namePattern = /^[A-Za-z ]+$/;
       const phonePattern = /^[0-9]{8,15}$/;
-
+    
       if (!namePattern.test(this.name)) {
         this.nameError = "Name must contain letters only.";
       }
       if (!phonePattern.test(this.phone)) {
         this.phoneError = "Phone number must contain 8–15 digits.";
       }
-
+    
       if (!this.nameError && !this.phoneError) {
         this.orderConfirmed = true;
-
+    
         setTimeout(() => {
           this.cart = [];
           this.name = "";
           this.phone = "";
-          this.orderConfirmed = false;
+          this.orderConfirmed = false; // hide success after a bit
         }, 1500);
       }
     },
+    
 
     goHome() {
       this.showCart = false;

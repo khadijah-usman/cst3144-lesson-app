@@ -126,25 +126,45 @@
         </h3>
       </div>
   
-      <!-- Checkout form (we'll improve validation in next step) -->
-      <form @submit.prevent="checkout">
-        <input v-model="name" placeholder="Name (letters only)" />
-        <p v-if="nameError" class="error">{{ nameError }}</p>
-  
-        <input v-model="phone" placeholder="Phone (numbers only)" />
-        <p v-if="phoneError" class="error">{{ phoneError }}</p>
-  
-        <button :disabled="!cart.length" class="checkout-btn">
-          <i class="fa-solid fa-paper-plane"></i> Submit Order
-        </button>
-      </form>
-  
-      <p v-if="orderConfirmed" class="success">
-        Order Confirmed Successfully!
-      </p>
-    </div>
-  </section>
-  
+      <div class="checkout-box">
+        <h3>Checkout</h3>
+        <form @submit.prevent="checkout">
+          <label>
+            Name
+            <input
+              v-model="name"
+              type="text"
+              placeholder="Name (letters only)"
+              @input="nameError = ''; orderConfirmed = false"
+            />
+          </label>
+          <p v-if="nameError" class="error">{{ nameError }}</p>
+    
+          <label>
+            Phone
+            <input
+              v-model="phone"
+              type="tel"
+              placeholder="Phone (numbers only)"
+              @input="phoneError = ''; orderConfirmed = false"
+            />
+          </label>
+          <p v-if="phoneError" class="error">{{ phoneError }}</p>
+    
+          <button
+            :disabled="!cart.length || !isFormValid"
+            class="checkout-btn"
+          >
+            <i class="fa-solid fa-paper-plane"></i>
+            Submit Order
+          </button>
+        </form>
+    
+        <p v-if="orderConfirmed" class="success">
+          Order Confirmed Successfully!
+        </p>
+      </div>
+    
 <script src="app.js"></script>
 </body>
 </html>

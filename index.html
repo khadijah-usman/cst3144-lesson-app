@@ -78,46 +78,73 @@
         </section>
 
         <!-- Cart Section -->
-        <section v-else class="cart-section">
-            <h2>Your Cart</h2>
-
-            <ul class="cart-list">
-                <li v-for="(item, index) in cart" :key="index" class="cart-item">
-                    <div class="cart-item-info">
-                        <img :src="item.image" alt="lesson" class="cart-thumb" />
-                        <div>
-                            <h4>{{ item.subject }}</h4>
-                            <p><i class="fa-solid fa-location-dot"></i> {{ item.location }}</p>
-                            <p>£{{ item.price }} | Spaces left: {{ item.spaces }}</p>
-                        </div>
-                    </div>
-                    <button class="remove-btn" @click="removeFromCart(index)">
-                        <i class="fa-solid fa-trash"></i> Remove
-                    </button>
-                </li>
-            </ul>
-
-            <div class="cart-total-box">
-                <h3>Total: £{{ cartTotal.toFixed(2) }}</h3>
+<section v-else class="cart-section">
+    <!-- Header with back button -->
+    <div class="cart-header">
+      <button class="back-btn" @click="showCart = false">
+        <i class="fa-solid fa-arrow-left"></i> Back to lessons
+      </button>
+      <h2>Your Cart</h2>
+    </div>
+  
+    <!-- Empty cart message -->
+    <p v-if="!cart.length" class="cart-empty">
+      Your cart is empty. Go back to the lessons page and add some lessons 🌱
+    </p>
+  
+    <!-- Cart content when there are items -->
+    <div v-else>
+      <ul class="cart-list">
+        <li v-for="(item, index) in cart" :key="index" class="cart-item">
+          <div class="cart-item-info">
+            <img
+              :src="item.image"
+              :alt="item.subject + ' lesson icon'"
+              class="cart-thumb"
+            />
+            <div>
+              <h4>{{ item.subject }}</h4>
+              <p>
+                <i class="fa-solid fa-location-dot"></i>
+                {{ item.location }}
+              </p>
+              <p>
+                £{{ item.price }} | Spaces left: {{ item.spaces }}
+              </p>
             </div>
-
-            <form @submit.prevent="checkout">
-                <input v-model="name" placeholder="Name (letters only)" />
-                <p v-if="nameError" class="error">{{ nameError }}</p>
-
-                <input v-model="phone" placeholder="Phone (numbers only)" />
-                <p v-if="phoneError" class="error">{{ phoneError }}</p>
-
-                <button :disabled="!cart.length" class="checkout-btn">
-                    <i class="fa-solid fa-paper-plane"></i> Submit Order
-                </button>
-            </form>
-
-            <p v-if="orderConfirmed" class="success">Order Confirmed Successfully!</p>
-        </section>
-    </main>
-</div>
-
+          </div>
+          <button class="remove-btn" @click="removeFromCart(index)">
+            <i class="fa-solid fa-trash"></i> Remove
+          </button>
+        </li>
+      </ul>
+  
+      <!-- Total box -->
+      <div class="cart-total-box">
+        <h3>
+          {{ cart.length }} item(s) | Total: £{{ cartTotal.toFixed(2) }}
+        </h3>
+      </div>
+  
+      <!-- Checkout form (we'll improve validation in next step) -->
+      <form @submit.prevent="checkout">
+        <input v-model="name" placeholder="Name (letters only)" />
+        <p v-if="nameError" class="error">{{ nameError }}</p>
+  
+        <input v-model="phone" placeholder="Phone (numbers only)" />
+        <p v-if="phoneError" class="error">{{ phoneError }}</p>
+  
+        <button :disabled="!cart.length" class="checkout-btn">
+          <i class="fa-solid fa-paper-plane"></i> Submit Order
+        </button>
+      </form>
+  
+      <p v-if="orderConfirmed" class="success">
+        Order Confirmed Successfully!
+      </p>
+    </div>
+  </section>
+  
 <script src="app.js"></script>
 </body>
 </html>

@@ -504,3 +504,9 @@ button:active {
 .fade-leave-to {
   opacity: 0;
 }
+.cart-empty {
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  margin-top: 10px;
+}

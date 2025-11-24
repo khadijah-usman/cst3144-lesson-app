@@ -63,6 +63,10 @@
             <!-- Lesson List -->
             <section v-if="!showCart" key="lessons" class="lesson-section">
                 <h2>Available Lessons</h2>
+                <p class="page-subtitle">
+                    Browse and book lessons across Hendon, Colindale, Brent Cross and more.
+                </p>
+
                 <p class="lesson-count">
                     {{ sortedAndFilteredLessons.length }} lesson(s) found
                 </p>
@@ -71,7 +75,8 @@
                     v-if="!sortedAndFilteredLessons.length && searchTerm"
                     class="no-results"
                 >
-                    No lessons found for "{{ searchTerm }}".
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    No lessons found for "{{ searchTerm }}". Try another subject or location.
                 </p>
 
                 <div v-else class="lesson-grid">
@@ -86,18 +91,27 @@
                             class="lesson-img"
                         />
                         <div class="lesson-info">
-                            <h3>
-                                <i :class="lesson.icon"></i>
-                                {{ lesson.subject }}
-                            </h3>
-                            <p>
+                            <div class="lesson-header-row">
+                                <h3>
+                                    <i :class="lesson.icon"></i>
+                                    {{ lesson.subject }}
+                                </h3>
+                                <span class="lesson-price">£{{ lesson.price }}</span>
+                            </div>
+
+                            <p class="lesson-meta">
                                 <i class="fa-solid fa-location-dot"></i>
                                 {{ lesson.location }}
                             </p>
-                            <p>£{{ lesson.price }}</p>
-                            <p>
+                            <p class="lesson-meta">
                                 <i class="fa-solid fa-users"></i>
-                                Spaces: {{ lesson.spaces }}
+                                {{ lesson.spaces }} spaces available
+                                <span
+                                    v-if="lesson.spaces <= 2"
+                                    class="badge-low"
+                                >
+                                    Almost full
+                                </span>
                             </p>
                         </div>
                         <button
